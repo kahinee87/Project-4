@@ -4,8 +4,8 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY3dob25nIiwiYSI6IjAyYzIwYTJjYTVhMzUxZTVkMzdmY
 var map = new mapboxgl.Map({
   container: 'mapContainer',
   style: 'mapbox://styles/mapbox/light-v9',
-  center: [-73.99,40.74],
-  zoom: 9.5,
+  center: [-73.930864,40.647238],
+  zoom: 12,
 });
 
 // Add zoom and rotation controls to the map.
@@ -21,5 +21,5 @@ map.on('style.load', function(){
     id: 'utica-lots-fill',
     type: 'fill',
     source: 'utica-pluto',
-  })  
+  })
 })
