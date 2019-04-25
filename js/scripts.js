@@ -9,7 +9,7 @@ var map = new mapboxgl.Map({
 });
 
 // Add zoom and rotation controls to the map.
-map.addControl(new mapboxxgl.NavigationControl());
+map.addControl(new mapboxgl.NavigationControl());
 
 var LandUseLookup = (code) => {
   switch (code) {
