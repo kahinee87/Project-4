@@ -127,7 +127,7 @@ map.on('style.load', function() {
   //this sets up the geojson as the source on themap which we can use to add visuals layers
   map.addSource('greenpoint-pluto',{
     type: 'geojson',
-    data: ./data/greenpoint-polygon.geojson
+    data: ./data/greenpoint-pluto.geojson
   });
 
   map.addlayer ({
