@@ -5,77 +5,138 @@ var map = new mapboxgl.Map({
   container: 'mapContainer',
   style: 'mapbox://styles/mapbox/light-v9',
   center: [-73.930864,40.647238],
-  zoom: 12,
+  zoom: 13,
 });
 
 // Add zoom and rotation controls to the map.
 map.addControl(new mapboxgl.NavigationControl());
 
-var LandUseLookup = (code) => {
+var LandUseLookup1 = (zonedist1) => {
+switch(zonedist1) {
+  case 'R4':
+  return {
+    color:'#ffff99',
+    description:'R4 residential Zone; Permissible FAR is...',
+  };
+  case 'R5':
+  return {
+    color:'#ffff99',
+    description:'R5 residential Zone; Permissible FAR is...',
+};
+case 'R6':
+return {
+  color:'#ffff99',
+  description:'R6 residential Zone; Permissible FAR is...',
+      };
+      case 'R7-1':
+      return {
+        color:'#ffff99',
+        description:'R7-1 residential Zone; Permissible FAR is...',
+      };
+      case 'R3-2':
+      return {
+        color:'#ffff99',
+        description:'R3-2 residential Zone; Permissible FAR is...',
+      };
+      case 'M1-1':
+      return {
+        color:'#ccb3ff',
+        description:'M1-1 residential Zone; Permissible FAR is...',
+      };
+      case 'M1-3':
+      return {
+        color:'#aa80ff',
+        description:'M1-3 residential Zone; Permissible FAR is...',
+      };
+      case 'M3-1':
+      return {
+        color:'#a64dff',
+        description:'M3-1 residential Zone; Permissible FAR is...',
+      };
+      case 'C8-1':
+      return {
+        color:'#ff8533',
+        description:'C8-1 residential Zone; Permissible FAR is...',
+      };
+      case 'C8-2':
+      return {
+        color:'#ff751a',
+        description:'C8-2 Commercial Zone ; Permissible FAR is...',
+      };
+    default:
+        return {
+          color: 'grey',
+          description: 'Outside Study Area...',
+  };
+}
+};
+
+
+var  LandUseLookup = (code) => {
   switch (code) {
     case 1:
       return {
-        color: '#f4f455',
+
         description: '1 & 2 Family',
       };
     case 2:
       return {
-        color: '#f7d496',
+
         description: 'Multifamily Walk-up',
       };
     case 3:
       return {
-        color: '#FF9900',
+
         description: 'Multifamily Elevator',
       };
     case 4:
       return {
-        color: '#f7cabf',
+
         description: 'Mixed Res. & Commercial',
       };
     case 5:
       return {
-        color: '#ea6661',
+
         description: 'Commercial & Office',
       };
     case 6:
       return {
-        color: '#d36ff4',
+
         description: 'Industrial & Manufacturing',
       };
     case 7:
       return {
-        color: '#dac0e8',
+
         description: 'Transportation & Utility',
       };
     case 8:
       return {
-        color: '#5CA2D1',
+
         description: 'Public Facilities & Institutions',
       };
     case 9:
       return {
-        color: '#8ece7c',
+
         description: 'Open Space & Outdoor Recreation',
       };
     case 10:
       return {
-        color: '#bab8b6',
+
         description: 'Parking Facilities',
       };
     case 11:
       return {
-        color: '#5f5f60',
+
         description: 'Vacant Land',
       };
     case 12:
       return {
-        color: '#5f5f60',
+
         description: 'Other',
       };
     default:
       return {
-        color: '#5f5f60',
+
         description: 'Other',
       };
   }
@@ -83,9 +144,9 @@ var LandUseLookup = (code) => {
 
 // use jquery to programmatically create a Legend
 // for numbers 1 - 11, get the land use color and description
-for (var i=1; i<12; i++) {
+for (var i='R4'; i<'R6'; i++) {
   // lookup the landuse info for the current iteration
-  const landuseInfo = LandUseLookup(i);
+  const landuseInfo = LandUseLookup1(i);
 
   // this is a simple jQuery template, it will append a div to the legend with the color and description
   $('.legend').append(`
@@ -98,10 +159,11 @@ for (var i=1; i<12; i++) {
 
 // a little object for looking up neighborhood center points
 var neighborHoodLookup = {
-  'park-slope': [-73.979702, 40.671199],
-  'morningside-heights': [-73.962750, 40.809099],
-  'fidi': [-74.007468, 40.710800],
-  'greenpoint': [-73.951,40.732169],
+  'crown-heights': [-73.931680,40.662280],
+  'Lefferts-Garden': [-73.929362,40.638121],
+  'East-Flatbush': [-73.928075,40.626591],
+  'Flatlands': [-73.926358,40.612975]
+  'utica-avenue': [-73.930864,40.647238],
 }
 
 
@@ -125,64 +187,60 @@ map.on('style.load', function() {
   map.setPaintProperty('water', 'fill-color', '#a4bee8')
 
   //this sets up the geojson as the source on themap which we can use to add visuals layers
-  map.addSource('greenpoint-pluto',{
+  map.addSource('utica-avenue',{
     type: 'geojson',
-    data: './data/greenpoint-pluto.geojson',
+    data: './data/utica-avenue.geojson',
   });
 
-  map.addlayer ({
-    id: 'greenpoint-lots-fill',
+  map.addLayer ({
+    id: 'utica-lots-fill',
     type: 'fill',
-    source: 'greenpoint-pluto',
+    source: 'utica-avenue',
     paint: {
       'fill-opacity': 0.7,
       'fill-color':{
               type: 'categorical',
-              property: 'landuse',
+              property: 'zonedist1',
               stops: [
                   [
-                    '01',
-                    LandUseLookup(1).color,
+                    'R4',
+                    LandUseLookup1('R4').color,
                   ],
                   [
-                    "02",
-                    LandUseLookup(2).color,
+                    "R5",
+                    LandUseLookup1('R5').color,
                   ],
                   [
-                    "03",
-                    LandUseLookup(3).color,
+                    "R6",
+                    LandUseLookup1('R6').color,
                   ],
                   [
-                    "04",
-                    LandUseLookup(4).color,
+                    "R7-1",
+                    LandUseLookup1('R7-1').color,
                   ],
                   [
-                    "05",
-                    LandUseLookup(5).color,
+                    "M1-1",
+                    LandUseLookup1('M1-1').color,
                   ],
                   [
-                    "06",
-                    LandUseLookup(6).color,
+                    "M1-3",
+                    LandUseLookup1('M1-3').color,
                   ],
                   [
-                    "07",
-                    LandUseLookup(7).color,
+                    "C8-1",
+                    LandUseLookup1('C8-1').color,
                   ],
                   [
-                    "08",
-                    LandUseLookup(8).color,
+                    "R3-2",
+                    LandUseLookup1('R3-2').color,
                   ],
                   [
-                    "09",
-                    LandUseLookup(9).color,
+                    "M3-1",
+                    LandUseLookup1('M3-1').color,
                   ],
                   [
-                    "10",
-                    LandUseLookup(10).color,
-                  ],
-                  [
-                    "11",
-                    LandUseLookup(11).color,
+                    "C8-2",
+                    LandUseLookup1('C8-2').color,
                   ],
                 ]
               }
@@ -191,20 +249,17 @@ map.on('style.load', function() {
 
         // add an outline to the tax lots which is only visible after zoom level 14.8
         map.addLayer({
-          id: 'greenpoint-lots-line',
+          id: 'utica-lots-line',
           type: 'line',
-          source: 'greenpoint-pluto',
+          source: 'utica-avenue',
           paint: {
-            'line-opacity': 0.7,
-            'line-color': 'gray',
-            'line-opacity': {
-              stops: [[14, 0], [14.8, 1]], // zoom-dependent opacity, the lines will fade in between zoom level 14 and 14.8
+            'line-opacity':0.3,
             }
-          }
+
         });
 
         // add an empty data source, which we will use to highlight the lot the user is hovering over
-        map.addSource('highlight-feature', {
+        map.addSource('outline-feature', {
           type: 'geojson',
           data: {
             type: 'FeatureCollection',
@@ -214,13 +269,14 @@ map.on('style.load', function() {
 
         // add a layer for the highlighted lot
         map.addLayer({
-          id: 'highlight-line',
+          id: 'outline-line',
           type: 'line',
-          source: 'highlight-feature',
+          source: 'outline-feature',
           paint: {
-            'line-width': 3,
+            'line-width': 1,
             'line-opacity': 0.9,
-            'line-color': 'black',
+            'line-color': 'grey',
+
           }
         });
 
@@ -228,7 +284,7 @@ map.on('style.load', function() {
         map.on('mousemove', function (e) {
           // query for the features under the mouse, but only in the lots layer
           var features = map.queryRenderedFeatures(e.point, {
-              layers: ['greenpoint-lots-fill'],
+              layers: ['utica-lots-fill'],
           });
 
           // get the first feature from the array of returned features.
@@ -239,18 +295,21 @@ map.on('style.load', function() {
 
             // lookup the corresponding description for the land use code
             var landuseDescription = LandUseLookup(parseInt(lot.properties.landuse)).description;
+            var zonedist1Description = LandUseLookup1(parseInt(lot.properties.zonedist1)).description;
 
             // use jquery to display the address and land use description to the sidebar
-            $('#address').text(lot.properties.address);
+            $('#zonedist1').text(zonedist1Description);
+            $('#builtfar').text(lot.properties.builtfar);
             $('#landuse').text(landuseDescription);
 
+
             // set this lot's polygon feature as the data for the highlight source
-            map.getSource('highlight-feature').setData(lot.geometry);
+            map.getSource('outline-feature').setData(lot.geometry);
           } else {
             map.getCanvas().style.cursor = 'default'; // make the cursor default
 
             // reset the highlight source to an empty featurecollection
-            map.getSource('highlight-feature').setData({
+            map.getSource('outline-feature').setData({
               type: 'FeatureCollection',
               features: []
             });
