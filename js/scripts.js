@@ -159,11 +159,10 @@ for (var i='R4'; i<'R6'; i++) {
 
 // a little object for looking up neighborhood center points
 var neighborHoodLookup = {
-  'crown-heights': [-73.931680,40.662280],
-  'Lefferts-Garden': [-73.929362,40.638121],
-  'East-Flatbush': [-73.928075,40.626591],
-  'Flatlands': [-73.926358,40.612975]
-  'utica-avenue': [-73.930864,40.647238],
+  'Crown-Heights': [-73.931347,40.660131],
+  'Lefferts-Garden': [-73.931304,40.646522],
+  'East-Flatbush': [-73.930489,40.636036],
+  'Flatlands': [-73.926680,40.616624],
 }
 
 
