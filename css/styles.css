@@ -1,4 +1,3 @@
-
 html, body {
   height: 100%;
   width: 100%;
@@ -6,45 +5,56 @@ html, body {
 }
 
 #mapContainer {
-  height: 500px;
-  width: 500px;
-  background: grey;
+  height: 100%;
+  width: 100%;
+  background: lightgrey;
   margin: 0 auto;
-  #sidebar {
-    width: 300px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    z-index: 10;
-    padding: 15px;
-  }
+}
 
-  .info-box {
-    top: 25px;
-    left: 25px;
-    z-index: 10;
-    background-color: #c3c3c3;
-    padding: 15px;
-    border-radius: 11px;
+#sidebar {
+  width: 300px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 20;
+  bottom: 20;
+  z-index: 10;
+  padding: 15px;
+}
 
-    margin-bottom:15px
-  }
+.info-box {
+  top: 25px;
+  left: 25px;
+  z-index: 10;
+  background-color:#336699;
+  padding: 15px;
+  font-size: 1rem;
+  font-weight: lighter;
+  border-radius: 11px;
+  margin-bottom:5px;
+}
 
-  h3 {
-    margin: 0 0 15px 0;
-    font-size: 15rem;
-  }
+h3 {
+  margin: 0 0 15px 0;
+  font-size: 1.5rem;
+  font-family: sans-serif;
+}
 
-  button {
-    padding: 10px;
-    font-weight: 500;
-    border-radius: 5px;
-  }
+h2 {
+  margin: 0 0 15px 0;
+  font-size: 1rem;
+}
 
-  .legend-color-box {
-    height: 15px;
-    width: 15px;
-    float: right;
-    margin-right: 10px;
-  }
+button {
+  padding: 10px;
+  font-weight: 500;
+  border-radius: 5px;
+  align-content: center;
+}
+
+.legend-color-box {
+  height: 15px;
+  width: 15px;
+  float: left;
+  margin-right: 10px;
+}

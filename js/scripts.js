@@ -5,7 +5,7 @@ var map = new mapboxgl.Map({
   container: 'mapContainer',
   style: 'mapbox://styles/mapbox/light-v9',
   center: [-73.930864,40.647238],
-  zoom: 13,
+  zoom: 15,
 });
 
 // Add zoom and rotation controls to the map.
@@ -16,57 +16,57 @@ switch(zonedist1) {
   case 'R4':
   return {
     color:'#ffff99',
-    description:'R4 residential Zone; Permissible FAR is...',
+    description:'R4 residential Zone; Permissible FAR is 0.75',
   };
   case 'R5':
   return {
-    color:'#ffff99',
-    description:'R5 residential Zone; Permissible FAR is...',
+    color:'#ffff4d',
+    description:'R5 residential Zone; Permissible FAR is 1.25',
 };
 case 'R6':
 return {
-  color:'#ffff99',
-  description:'R6 residential Zone; Permissible FAR is...',
+  color:'#ffff00',
+  description:'R6 residential Zone; Permissible FAR is 0.78 - 2.43',
       };
       case 'R7-1':
       return {
-        color:'#ffff99',
-        description:'R7-1 residential Zone; Permissible FAR is...',
+        color:'#e6e600',
+        description:'R7-1 residential Zone; Permissible FAR is 0.87 -3.44',
       };
       case 'R3-2':
       return {
-        color:'#ffff99',
-        description:'R3-2 residential Zone; Permissible FAR is...',
+        color:'#ffffb3',
+        description:'R3-2 residential Zone; Permissible FAR is 0.5',
       };
       case 'M1-1':
       return {
         color:'#ccb3ff',
-        description:'M1-1 residential Zone; Permissible FAR is...',
+        description:'M1-1 residential Zone; Permissible FAR is 1',
       };
       case 'M1-3':
       return {
         color:'#aa80ff',
-        description:'M1-3 residential Zone; Permissible FAR is...',
+        description:'M1-3 residential Zone; Permissible FAR is 5',
       };
       case 'M3-1':
       return {
         color:'#a64dff',
-        description:'M3-1 residential Zone; Permissible FAR is...',
+        description:'M3-1 residential Zone; Permissible FAR is 2',
       };
       case 'C8-1':
       return {
         color:'#ff8533',
-        description:'C8-1 residential Zone; Permissible FAR is...',
+        description:'C8-1 residential Zone; Permissible FAR is 1',
       };
       case 'C8-2':
       return {
         color:'#ff751a',
-        description:'C8-2 Commercial Zone ; Permissible FAR is...',
+        description:'C8-2 Commercial Zone ; Permissible FAR is 2',
       };
     default:
         return {
           color: 'grey',
-          description: 'Outside Study Area...',
+          description: 'other',
   };
 }
 };
@@ -142,20 +142,67 @@ var  LandUseLookup = (code) => {
   }
 };
 
-// use jquery to programmatically create a Legend
-// for numbers 1 - 11, get the land use color and description
-for (var i='R4'; i<'R6'; i++) {
-  // lookup the landuse info for the current iteration
-  const landuseInfo = LandUseLookup1(i);
+const zones = [
+{
+zonedist1: 'R4',
+color:'#ffff99',
 
-  // this is a simple jQuery template, it will append a div to the legend with the color and description
+},
+{
+zonedist1: 'R5',
+color:'#ffff4d',
+
+},
+{
+zonedist1: 'R6',
+color:'#ffff99',
+
+},
+{
+zonedist1: 'R7-1',
+color:'#ffff99',
+
+},
+{
+zonedist1: 'R3-2',
+color:'#ffff99',
+
+},
+{
+zonedist1: 'M1-1',
+color:'#ccb3ff',
+
+},
+{
+zonedist1: 'M1-3',
+color:'#aa80ff',
+
+},
+  {
+    zonedist1: 'M3-1',
+    color:'#a64dff',
+
+},
+  {
+      zonedist1: 'C8-1',
+        color:'#ff8533',
+
+  },
+    {
+      zonedist1: 'C8-2',
+    color:'#ff751a',
+
+  },
+]
+zones.forEach(function(zone) {
   $('.legend').append(`
     <div>
-      <div class="legend-color-box" style="background-color:${landuseInfo.color};"></div>
-      ${landuseInfo.description}
+      <div class="legend-color-box" style="background-color:${zone.color};"></div>
+      ${zone.zonedist1}
     </div>
   `)
-}
+})
+
 
 // a little object for looking up neighborhood center points
 var neighborHoodLookup = {
@@ -163,6 +210,7 @@ var neighborHoodLookup = {
   'Lefferts-Garden': [-73.931304,40.646522],
   'East-Flatbush': [-73.930489,40.636036],
   'Flatlands': [-73.926680,40.616624],
+  'utica-avenue':[-73.932753,40.638186],
 }
 
 
@@ -178,12 +226,12 @@ map.on('style.load', function() {
     var center = neighborHoodLookup[neighborhood];
 
     // fly to the neighborhood's center point
-    map.flyTo({center: center, zoom: 14});
+    map.flyTo({center: center, zoom: 15});
   });
 
   // let's hack the basemap style a bit
   // you can use map.getStyle() in the console to inspect the basemap layers
-  map.setPaintProperty('water', 'fill-color', '#a4bee8')
+  map.setPaintProperty('water', 'fill-color', 'black')
 
   //this sets up the geojson as the source on themap which we can use to add visuals layers
   map.addSource('utica-avenue',{
@@ -272,9 +320,9 @@ map.on('style.load', function() {
           type: 'line',
           source: 'outline-feature',
           paint: {
-            'line-width': 1,
+            'line-width': 0.1,
             'line-opacity': 0.9,
-            'line-color': 'grey',
+            'line-color': 'lightgrey',
 
           }
         });
@@ -297,7 +345,7 @@ map.on('style.load', function() {
             var zonedist1Description = LandUseLookup1(parseInt(lot.properties.zonedist1)).description;
 
             // use jquery to display the address and land use description to the sidebar
-            $('#zonedist1').text(zonedist1Description);
+            $('#zonedist1').text(lot.properties.zonedist1);
             $('#builtfar').text(lot.properties.builtfar);
             $('#landuse').text(landuseDescription);
 
